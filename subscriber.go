@@ -28,6 +28,10 @@ func AddHandler(topic, channel string, handler HandlerFunc) {
 	}
 
 	t := client.Topic(topic)
+	if exists, _ := t.Exists(ctx); !exists {
+		client.CreateTopic(ctx, topic)
+	}
+	
 	subscriber := client.Subscription(channel)
 	if exists, err := subscriber.Exists(ctx); !exists || err != nil {
 		fmt.Println("topic:"+topic+" channel:"+channel+" doesn't exists. creating one. err:", err)
