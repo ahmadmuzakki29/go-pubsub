@@ -16,6 +16,9 @@ var client *pubsub.Client
 var projectid string
 
 func AddHandler(topic, channel string, handler HandlerFunc) {
+	if projectid==""{
+		log.Fatal("Init not called!")
+	}
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	var err error
@@ -46,7 +49,7 @@ func AddHandler(topic, channel string, handler HandlerFunc) {
 	client.Close()
 }
 
-type HandlerFunc func(message *pubsub.Message) error
+type HandlerFunc func(message *Message) error
 
 func subscribe(ctx context.Context, subscriber *pubsub.Subscription, handler HandlerFunc) {
 	iterator, err := subscriber.Pull(ctx)
@@ -66,7 +69,7 @@ func subscribe(ctx context.Context, subscriber *pubsub.Subscription, handler Han
 			break
 		}
 
-		err = handler(message)
+		err = handler(&Message{*message})
 		if err != nil {
 			config.Output(subscriber.String(), "/", topic, " ERROR ", err)
 		}

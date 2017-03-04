@@ -3,6 +3,7 @@ package pubsub
 import (
 	"cloud.google.com/go/pubsub"
 	"golang.org/x/net/context"
+	"log"
 )
 
 var publisher = make(map[string]*Publisher)
@@ -12,6 +13,9 @@ type Publisher struct {
 }
 
 func getPublisher(topic string) (*Publisher, error) {
+	if projectid==""{
+		log.Fatal("Init not called!")
+	}
 	if publisher[topic] == nil {
 		ctx := context.Background()
 

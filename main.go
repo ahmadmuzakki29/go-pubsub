@@ -15,6 +15,9 @@ var config *Config
 
 func Init(cfg Config){
 	projectid = cfg.ProjectId
+	if projectid==""{
+		log.Fatal("ProjectId should not empty")
+	}
 	if cfg.Output==nil{
 		cfg.Output = output
 	}
