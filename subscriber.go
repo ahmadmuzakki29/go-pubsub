@@ -13,13 +13,13 @@ import (
 
 var client *pubsub.Client
 
-const PROJECT_ID = "schoolplus-160115"
+var projectid string
 
 func AddHandler(topic, channel string, handler HandlerFunc) {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	var err error
-	client, err = pubsub.NewClient(ctx, PROJECT_ID)
+	client, err = pubsub.NewClient(ctx, projectid)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -68,7 +68,7 @@ func subscribe(ctx context.Context, subscriber *pubsub.Subscription, handler Han
 
 		err = handler(message)
 		if err != nil {
-			log.Println(subscriber.String(), "/", topic, " ERROR ", err)
+			config.Output(subscriber.String(), "/", topic, " ERROR ", err)
 		}
 	}
 }

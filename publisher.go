@@ -15,7 +15,7 @@ func getPublisher(topic string) (*Publisher, error) {
 	if publisher[topic] == nil {
 		ctx := context.Background()
 
-		client, err := pubsub.NewClient(ctx, PROJECT_ID)
+		client, err := pubsub.NewClient(ctx, projectid)
 		if err != nil {
 			return nil, err
 		}
